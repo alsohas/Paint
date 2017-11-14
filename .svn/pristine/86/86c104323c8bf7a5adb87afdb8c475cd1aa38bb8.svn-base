@@ -1,0 +1,45 @@
+package tools;
+
+import java.awt.Point;
+
+/**
+ * @author Abdullah
+ * @version 2/23/2016     
+ */
+public class Rectangle extends Line {
+    
+    /**
+     * The height of rectangle.
+     */
+    private final int myHeight;
+    
+    /**
+     * The width of rectangle. 
+     */
+    private final int myWidth;
+
+    /**
+     * @param theStart Starting point of rectangle.
+     * @param theEnd End point of rectangle.
+     */
+    public Rectangle(final Point theStart, final Point theEnd) {
+        super(theStart, theEnd);
+        myHeight = (int) (theStart.getY() - theEnd.getY());
+        myWidth = (int) (theStart.getX() - theEnd.getX());
+    }
+    
+    /**
+     * @return Returns the height of rectangle.
+     */
+    public int getHeight() {
+        return myHeight;
+    }
+
+    /**
+     * @return Returns the width of rectangle.
+     */
+    public int getWidth() {
+        return myWidth;
+    }
+
+}

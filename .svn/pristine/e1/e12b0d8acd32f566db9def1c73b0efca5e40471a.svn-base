@@ -1,0 +1,263 @@
+/**
+ * 
+ */
+package gui;
+
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Stroke;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.GeneralPath;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import javax.swing.JPanel;
+
+import tools.Ellipse;
+import tools.Line;
+import tools.Pencil;
+import tools.Rectangle;
+import tools.Shape;
+
+
+
+/**
+ * @author Abdullah
+ * @version 2/23/2016
+ */
+public class DrawPane extends JPanel {
+
+    /**
+     * Serial ID.
+     */
+    private static final long serialVersionUID = 4508370872771701644L;
+    
+    /**
+     * Work around to the dot in the top left corner.
+     */
+    private static final Point DEFAULT_START = new Point(-1, -1);
+    
+    /**
+     * The default dimension of the image container.
+     */
+    private final Dimension myPanelDimension = new Dimension(500, 400);
+    
+    /**
+     * This is needed to let the pencil drawer know when 
+     * to stop adding points to the path list.
+     */
+    private boolean myMouseReleased;
+    
+    /**
+     * List of all the shapes drawn.
+     */
+    private final List<Shape> myShapes;
+
+    /**
+     * The current shape which is being drawn.
+     */
+    private Shape myCurrentShape = new Line(DEFAULT_START, DEFAULT_START);
+    
+    /**
+     * Gets the x and y values for shapes.
+     */
+    private final MouseListener myMouseHandler = new MouseAdapter() {
+        @Override
+        public void mousePressed(final MouseEvent theE) {
+            myX1 = theE.getX();
+            myY1 = theE.getY();
+            myX2 = theE.getX();
+            myY2 = theE.getY();
+            myMouseReleased = false;
+        }
+        
+        @Override 
+        public void mouseReleased(final MouseEvent theE) {
+            myX2 = theE.getX();
+            myY2 = theE.getY();
+            myMouseReleased = true;
+        }
+    };
+    
+    /**
+     * Used by the draw tool.
+     */
+    private final MouseMotionListener myMouseMotionHandler = new MouseMotionAdapter() {
+        @Override
+        public void mouseDragged(final MouseEvent theE) {
+            myX2 = theE.getX();
+            myY2 = theE.getY();
+            repaint();
+        }
+    };
+    
+    /**
+     * Used by the mouse handlers and draw methods.
+     */
+    private int myX1;
+    
+    /**
+     * Used by the mouse handlers and draw methods.
+     */
+    private int myY1;
+    
+    /**
+     * Used by the mouse handlers and draw methods.
+     */
+    private int myX2;
+        
+    /**
+     * Used by the mouse handlers and draw methods.
+     */
+    private int myY2;
+
+    /**
+     * Which shape to draw.
+     */
+    private int myShapeIndicator;
+    
+
+    
+
+
+    /**
+     * 
+     */
+    public DrawPane() {
+        super();
+        setBackground(Color.WHITE);
+        setPreferredSize(myPanelDimension);
+        
+        addMouseListener(myMouseHandler);
+        addMouseMotionListener(myMouseMotionHandler);
+        
+        myShapes = new ArrayList<Shape>();
+        myShapes.add(myCurrentShape);
+    }
+    
+    @Override
+    public void paintComponent(final Graphics theG) {
+        super.paintComponent(theG);
+        final Graphics2D g2 = (Graphics2D) theG;
+        if (Objects.nonNull(myShapes)) {
+            for (int j = 0; j < myShapes.size(); j++) {
+                anotherDrawMethod(myShapes.get(j), g2);
+            }
+        }
+        g2.setColor(myCurrentShape.getColor());
+        g2.setStroke(myCurrentShape.getStroke());
+        if (myShapeIndicator == 1) {
+            myCurrentShape = new Line(new Point(myX1, myY1), new Point(myX2, myY2));
+            g2.drawLine(myX1, myY1, myX2, myY2);
+        
+        } else if (myShapeIndicator == 2) {
+            myCurrentShape = new Rectangle(new Point(myX1, myY1), new Point(myX2, myY2));
+            g2.drawRect(myX1, myY2, ((Rectangle) myCurrentShape).getWidth(), 
+                          ((Rectangle) myCurrentShape).getHeight());
+        
+        } else if (myShapeIndicator == 3) { //How do i even get rid of this??
+            myCurrentShape = new Ellipse(new Point(myX1, myY1), new Point(myX2, myY2));
+            g2.drawOval(myX1, myY2, ((Ellipse) myCurrentShape).getWidth(), 
+                          ((Ellipse) myCurrentShape).getHeight());
+        
+        } else if (myShapeIndicator == 4) { //And this. 
+            myCurrentShape = new Pencil(new Point(myX1, myY1), new Point(myX2, myY2));
+            while (!myMouseReleased) {
+                ((Pencil) myCurrentShape).setNextPoint(new Point(myX2, myY2));
+            }
+            final GeneralPath pencil = 
+                            new GeneralPath(GeneralPath.WIND_EVEN_ODD, ((Pencil) 
+                                            myCurrentShape).getXCoordinates().size());
+            pencil.moveTo(((Pencil) myCurrentShape).getXCoordinates().get(0), ((Pencil) 
+                            myCurrentShape).getYCoordinates().get(0));
+            
+            for (int i = 1; i < ((Pencil) myCurrentShape).getXCoordinates().size(); i++) {
+                pencil.lineTo(((Pencil) myCurrentShape).getXCoordinates().get(i), 
+                              ((Pencil) myCurrentShape).getYCoordinates().get(i));
+            }
+            g2.draw(pencil);
+            
+        
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    
+    
+    /**
+     * @param theShape The shape is passed on to this method to be drawn.
+     * @param g2 The graphics panel send this to be drawn onto.
+     * 
+     */
+    private void anotherDrawMethod(final Shape theShape, final Graphics2D g2) {
+        g2.setStroke(theShape.getStroke());
+        g2.setColor(theShape.getColor());
+        if (theShape.getClass().getName().equals("Line")) {
+            g2.drawLine((int) theShape.getStartPoint().getX(), 
+                        (int) theShape.getStartPoint().getY(), 
+                        (int) theShape.getEndPoint().getX(), 
+                        (int) theShape.getEndPoint().getY());
+        } else if (theShape.getClass().getName().equals("Pencil")) {
+            final GeneralPath pencil = 
+                            new GeneralPath(GeneralPath.WIND_EVEN_ODD, 
+                                            ((Pencil) theShape).getXCoordinates().size());
+            pencil.moveTo(((Pencil) theShape).getXCoordinates().get(0), ((Pencil) 
+                            theShape).getYCoordinates().get(0));
+            
+            for (int i = 1; i < ((Pencil) theShape).getXCoordinates().size(); i++) {
+                pencil.lineTo(((Pencil) theShape).getXCoordinates().get(i), 
+                              ((Pencil) theShape).getYCoordinates().get(i));
+            }
+            g2.draw(pencil);
+        } else if (theShape.getClass().getName().equals("Rectangle")) {
+            g2.drawRect((int) theShape.getStartPoint().getX(), 
+                        (int) theShape.getStartPoint().getY(), 
+                        ((Rectangle) theShape).getWidth(), ((Rectangle) theShape).getHeight());
+        } else if (theShape.getClass().getName().equals("Ellipse")) {
+            g2.drawOval((int) theShape.getStartPoint().getX(), 
+                        (int) theShape.getStartPoint().getY(), 
+                        ((Ellipse) theShape).getWidth(), ((Ellipse) theShape).getHeight());
+        }
+    }
+
+    /**
+     * @param theShapeIndicator Sets which shape the user has selected.
+     */
+    public void setShape(final int theShapeIndicator) {
+        myShapeIndicator = theShapeIndicator;
+        
+    }
+
+    /**
+     * @param theColor Sets current color.
+     */
+    public void setPanelColor(final Color theColor) {
+        myCurrentShape.setColor(theColor);
+    }
+    
+    /**
+     * @param theStroke Sets current stroke.
+     */
+    public void setCurrentStroke(final Stroke theStroke) {
+        myCurrentShape.setStroke(theStroke);
+    }
+    /**
+     * Resets the drawing pane.
+     */
+    public void reset() {
+        myCurrentShape = new Line(DEFAULT_START, DEFAULT_START);
+        myShapes.clear();
+    }
+
+}

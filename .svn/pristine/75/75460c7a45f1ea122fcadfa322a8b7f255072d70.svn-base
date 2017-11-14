@@ -1,0 +1,50 @@
+/**
+ * 
+ */
+package actions;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+
+/**
+ * @author Abdullah
+ *
+ */
+public class ColorChooserAction extends AbstractAction {
+
+    /**
+     * 
+     */
+    public ColorChooserAction() {
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @param arg0
+     */
+    public ColorChooserAction(String arg0) {
+        super(arg0);
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @param arg0
+     * @param arg1
+     */
+    public ColorChooserAction(String arg0, Icon arg1) {
+        super(arg0, arg1);
+        // TODO Auto-generated constructor stub
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+}

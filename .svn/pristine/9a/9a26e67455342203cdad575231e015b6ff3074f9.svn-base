@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package tools;
+
+import java.awt.Point;
+
+/**
+ * @author Abdullah
+ * @version 2/23/2016
+ */
+public class Ellipse extends Rectangle {
+
+    /**
+     * @param theStart The start point of ellipse.
+     * @param theEnd The end point of ellipse.
+     */
+    public Ellipse(final Point theStart, final Point theEnd) {
+        super(theStart, theEnd);
+    }
+
+}

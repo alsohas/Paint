@@ -1,0 +1,76 @@
+/**
+ * 
+ */
+package tools;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Abdullah
+ * @version 2/23/2016
+ */
+public class Pencil extends AbstractShape {
+    
+    /**
+     * List for storing x coordinates.
+     */
+    private final List<Integer> myXPoints;
+    
+    /**
+     * List for storing y coordinates.
+     */
+    private final List<Integer> myYPoints;
+
+    /**
+     * @param theStart Starting point of the shape.
+     * @param theNext Following point of the shape.
+     */
+    public Pencil(final Point theStart, final Point theNext) {
+        super(theStart, theNext);
+        myXPoints = new ArrayList<Integer>();
+        myYPoints = new ArrayList<Integer>();
+        
+        myXPoints.add((int) theStart.getX());
+        myYPoints.add((int) theStart.getY());
+    }
+
+    @Override
+    public Shape getShape() {
+        return this;
+    }
+
+    @Override
+    public void setNextPoint(final Point thePoint) {
+        myXPoints.add((int) thePoint.getX());
+        myYPoints.add((int) thePoint.getY());
+        
+    }
+
+    @Override
+    public Point getStartPoint() {
+        return new Point(myXPoints.get(0), myYPoints.get(0));
+    }
+
+    @Override
+    public Point getEndPoint() {
+        return new Point(myXPoints.get(myXPoints.size() - 1), 
+                         myYPoints.get(myYPoints.size() - 1));
+    }
+    
+    /**
+     * @return Returns a list with all the x coordinates.
+     */
+    public List<Integer> getXCoordinates() {
+        return myXPoints;
+    }
+    
+    /**
+     * @return Returns a list with all the x coordinates.
+     */
+    public List<Integer> getYCoordinates() {
+        return myYPoints;
+    }
+
+}

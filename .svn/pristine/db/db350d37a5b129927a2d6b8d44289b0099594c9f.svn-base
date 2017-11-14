@@ -1,0 +1,76 @@
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSlider;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+
+import gui.DrawPane;
+import gui.MenuBar;
+import gui.Toolbar;
+
+/**
+ * @author Abdullah Islam
+ * @version 2/8/2016
+ */
+
+
+public class PowerPaint extends JFrame {
+    
+    /**
+     * Serial version id.
+     */
+    private static final long serialVersionUID = -6343090866765295116L;
+    
+
+    
+    /**
+     * Screen center to set start location of GUI.
+     */
+    private static final Dimension SCREEN_CENTER = Toolkit.getDefaultToolkit().getScreenSize();
+    
+
+    
+
+
+
+
+    /**
+     * Going to set up the window.
+     */
+    public PowerPaint() {
+        super("PowerPaint");
+        setLayout(new BorderLayout());
+        add(new DrawPane(), BorderLayout.CENTER);
+        setJMenuBar(new MenuBar());
+        add(new Toolbar(), BorderLayout.SOUTH);
+        setVisible(true);
+    }
+    
+    
+        
+
+}
