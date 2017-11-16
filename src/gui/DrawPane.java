@@ -51,11 +51,6 @@ public class DrawPane extends JPanel {
      */
     private static final int DEFAULT_STROKE = 3;
     
-//    /**
-//     * Default stroke thickness.
-//     */
-//    private static final int[] INDICATORS = {3, 4};
-
     /**
      * Default color is purple.
      */
@@ -322,8 +317,6 @@ public class DrawPane extends JPanel {
         int width = theRectangle.getWidth();
         
         if (theRectangle.getMode()) {
-            System.out.println("t");
-
             if (Math.abs(height) >= Math.abs(width)) {
                 width = height;
             } else {
