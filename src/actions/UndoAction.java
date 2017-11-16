@@ -45,7 +45,5 @@ public class UndoAction extends AbstractAction {
     @Override
     public void actionPerformed(final ActionEvent theE) {
         myPane.reset();
-
     }
-
 }
