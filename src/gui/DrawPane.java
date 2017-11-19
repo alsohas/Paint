@@ -370,6 +370,8 @@ public class DrawPane extends JPanel {
         myShapes.clear();
         myCurrentStroke = new BasicStroke(DEFAULT_STROKE);
         myCurrentColor = DEFAULT_COLOR;
+        myX1 = myX2 = myY1 = myY1 = 0;
+        
         repaint();
     }
 
